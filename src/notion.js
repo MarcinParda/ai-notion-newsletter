@@ -67,3 +67,74 @@ export async function getArticles() {
 
   return articles;
 }
+
+export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
+  const notion = getNotionClient();
+
+  const blogNewsletterParagraphs = blogNewsletter.split('\n');
+  const jobNewsletterParagraphs = jobNewsletter.split('\n');
+
+  await notion.pages.create({
+    parent: {
+      type: 'database_id',
+      database_id: process.env.NOTION_NEWSLETTER_DATABASE_ID,
+    },
+    properties: {
+      Name: {
+        title: [
+          {
+            type: 'text',
+            text: {
+              content: 'Job newsletter',
+            },
+          },
+        ],
+      },
+    },
+    children: [
+      {
+        object: 'block',
+        paragraph: {
+          rich_text: jobNewsletterParagraphs.map((paragraph) => ({
+            text: {
+              content: paragraph + '\n',
+            },
+          })),
+          color: 'default',
+        },
+      },
+    ],
+  });
+
+  await notion.pages.create({
+    parent: {
+      type: 'database_id',
+      database_id: process.env.NOTION_NEWSLETTER_DATABASE_ID,
+    },
+    properties: {
+      Name: {
+        title: [
+          {
+            type: 'text',
+            text: {
+              content: 'Blog newsletter',
+            },
+          },
+        ],
+      },
+    },
+    children: [
+      {
+        object: 'block',
+        paragraph: {
+          rich_text: blogNewsletterParagraphs.map((paragraph) => ({
+            text: {
+              content: paragraph + '\n',
+            },
+          })),
+          color: 'default',
+        },
+      },
+    ],
+  });
+}

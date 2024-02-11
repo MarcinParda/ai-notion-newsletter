@@ -21,7 +21,7 @@ function generateNewsletterBody(articles) {
   return newsletterBody;
 }
 
-export async function generateNewsletters(articles) {
+export function generateNewsletters(articles) {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

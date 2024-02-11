@@ -1,4 +1,4 @@
-import { getArticles } from './notion.js';
+import { getArticles, saveNewslettersToNotion } from './notion.js';
 import { addCategoriesToArticles } from './add_category.js';
 import { generateNewsletters } from './generate_newsletters.js';
 import { groupArticlesByCategory } from './utils.js';
@@ -16,5 +16,10 @@ const groupedArticles = groupArticlesByCategory(articlesWithCategories);
 
 console.log('Generating newsletters...');
 const { jobNewsletter, blogNewsletter } = generateNewsletters(groupedArticles);
+
+console.log('Saving newsletters to notion...');
+await saveNewslettersToNotion(jobNewsletter, blogNewsletter);
+
+console.log('GENERATE NEWSLETTERS DONE!');
 
 process.exit(0);
