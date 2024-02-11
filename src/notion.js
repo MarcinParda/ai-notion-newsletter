@@ -1,4 +1,5 @@
 import { Client } from '@notionhq/client';
+import { richTextToMarkdown, cleanString } from './utils';
 
 function getNotionClient() {
   if (!process.env.NOTION_READER_DATABASE_ID) {
@@ -7,47 +8,8 @@ function getNotionClient() {
   return new Client({ auth: process.env.NOTION_NEWSLETTER_CONNECTION });
 }
 
-const MY_HOST = 'parda.me';
-
-export function richTextToMarkdown(block) {
-  const { type } = block;
-  if (type !== 'rich_text') {
-    console.error(
-      new Error('Triying to convert non rich text block to markdown')
-    );
-    return null;
-  }
-
-  return block.rich_text.reduce((acc, curr) => {
-    const { plain_text: text, annotations, href } = curr;
-    const { bold, code, italic, strikethrough } = annotations;
-    const url = href && new URL(href);
-    let path = href;
-
-    if (url?.hostname === MY_HOST) {
-      path = url.pathname;
-    }
-
-    let parsed = text;
-
-    if (italic) {
-      parsed = `_${parsed}_`;
-    }
-    if (bold) {
-      parsed = `**${parsed}**`;
-    }
-    if (code) {
-      parsed = `\`${parsed}\``;
-    }
-    if (strikethrough) {
-      parsed = `~~${parsed}~~`;
-    }
-    if (path) {
-      parsed = `[${parsed}](${path})`;
-    }
-
-    return `${acc}${parsed}`;
-  }, '');
+function filterByDate(arr) {
+  return arr.filter((obj) => new Date(obj.date) > new Date('2024-01-29'));
 }
 
 function notionPageToArticle(page) {
@@ -69,10 +31,6 @@ function notionPageToArticle(page) {
     date,
     is_newsletter,
   };
-}
-
-function filterByDate(arr) {
-  return arr.filter((obj) => new Date(obj.date) > new Date('2024-01-29'));
 }
 
 async function getAllArticlesFromNotion() {
@@ -102,10 +60,5 @@ export async function getArticles() {
   const newsletterArticles = articlesSinceLastNewsletter.filter(
     (article) => article.is_newsletter
   );
-  console.log(newsletterArticles, newsletterArticles.length);
   return newsletterArticles;
-}
-
-export function cleanString(str) {
-  return str.replace(/\s+/g, ' ').trim();
 }
