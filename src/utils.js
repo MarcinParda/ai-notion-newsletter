@@ -41,3 +41,13 @@ export function richTextToMarkdown(block) {
 export function cleanString(str) {
   return str.replace(/\s+/g, ' ').trim();
 }
+
+export function groupArticlesByCategory(articles) {
+  const groupedArticles = articles.reduce((acc, article) => {
+    const { category, ...rest } = article;
+    acc[category] = [...(acc[category] || []), rest];
+    return acc;
+  });
+
+  return groupedArticles;
+}
