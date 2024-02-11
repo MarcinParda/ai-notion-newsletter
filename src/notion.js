@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client';
-import { richTextToMarkdown, cleanString } from './utils';
+import { richTextToMarkdown, cleanString } from './utils.js';
 
 function getNotionClient() {
   if (!process.env.NOTION_READER_DATABASE_ID) {
@@ -13,7 +13,6 @@ function filterByDate(arr) {
 }
 
 function notionPageToArticle(page) {
-  console.log(page.properties.Title);
   const titlePlainTexts = page.properties.Title.title.map(
     (text) => text.plain_text
   );
@@ -60,5 +59,11 @@ export async function getArticles() {
   const newsletterArticles = articlesSinceLastNewsletter.filter(
     (article) => article.is_newsletter
   );
-  return newsletterArticles;
+  const articles = newsletterArticles.map((article) => ({
+    title: article.title,
+    comment: article.my_comment,
+    link: article.link,
+  }));
+
+  return articles;
 }

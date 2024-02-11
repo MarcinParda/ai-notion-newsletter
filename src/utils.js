@@ -3,10 +3,7 @@ const MY_HOST = 'parda.me';
 export function richTextToMarkdown(block) {
   const { type } = block;
   if (type !== 'rich_text') {
-    console.error(
-      new Error('Triying to convert non rich text block to markdown')
-    );
-    return null;
+    throw new Error('Triying to convert non rich text block to markdown');
   }
 
   return block.rich_text.reduce((acc, curr) => {
