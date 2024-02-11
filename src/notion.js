@@ -68,11 +68,21 @@ export async function getArticles() {
   return articles;
 }
 
+const titleRegex = /"([^"]+)"/;
+
 export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
   const notion = getNotionClient();
 
   const blogNewsletterParagraphs = blogNewsletter.split('\n');
   const jobNewsletterParagraphs = jobNewsletter.split('\n');
+
+  const jobNewsletterTitle = jobNewsletterParagraphs[0];
+  const regex = /"([^"]+)"/;
+  const match = blogNewsletterParagraphs[1].match(regex);
+  if(!match) {
+    throw new Error('Blog newsletter title not found');
+  }
+  const blogNewsletterTitle = match[1];
 
   await notion.pages.create({
     parent: {
@@ -85,7 +95,7 @@ export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
           {
             type: 'text',
             text: {
-              content: 'Job newsletter',
+              content: jobNewsletterTitle,
             },
           },
         ],
@@ -106,6 +116,8 @@ export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
     ],
   });
 
+  console.log('Job newsletter saved to Notion');
+
   await notion.pages.create({
     parent: {
       type: 'database_id',
@@ -117,7 +129,7 @@ export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
           {
             type: 'text',
             text: {
-              content: 'Blog newsletter',
+              content: blogNewsletterTitle,
             },
           },
         ],
@@ -137,4 +149,6 @@ export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
       },
     ],
   });
+
+  console.log('Blog newsletter saved to Notion');
 }

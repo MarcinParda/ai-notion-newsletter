@@ -20,6 +20,6 @@ const { jobNewsletter, blogNewsletter } = generateNewsletters(groupedArticles);
 console.log('Saving newsletters to notion...');
 await saveNewslettersToNotion(jobNewsletter, blogNewsletter);
 
-console.log('GENERATE NEWSLETTERS DONE!');
+console.log('\n---\n NEW NEWSLETTERS SAVED ON NOTION!\n');
 
 process.exit(0);
