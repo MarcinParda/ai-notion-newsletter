@@ -3,4 +3,3 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const articles = await getArticles();
-console.log(articles);
