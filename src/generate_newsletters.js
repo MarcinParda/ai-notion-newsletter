@@ -36,8 +36,6 @@ export function generateNewsletters(articles) {
     month: 'long',
   });
 
-  // const newsletterNr = await countFilesInDirectory('newsletters/blog');
-
   const newsletterBody = generateNewsletterBody(articles);
 
   let blogNewsletter = `---

@@ -61,7 +61,7 @@ export async function getArticles() {
   );
   const articles = newsletterArticles.map((article) => ({
     title: article.title,
-    comment: article.my_comment,
+    my_comment: article.my_comment,
     link: article.link,
   }));
 
@@ -79,7 +79,7 @@ export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
   const jobNewsletterTitle = jobNewsletterParagraphs[0];
   const regex = /"([^"]+)"/;
   const match = blogNewsletterParagraphs[1].match(regex);
-  if(!match) {
+  if (!match) {
     throw new Error('Blog newsletter title not found');
   }
   const blogNewsletterTitle = match[1];
