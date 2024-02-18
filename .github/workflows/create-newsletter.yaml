@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NOTION_NEWSLETTER_CONNECTION: ${{ secrets.NOTION_NEWSLETTER_CONNECTION }}
+      NOTION_READER_DATABASE_ID: ${{ secrets.NOTION_READER_DATABASE_ID }}
+      NOTION_NEWSLETTER_DATABASE_ID: ${{ secrets.NOTION_NEWSLETTER_DATABASE_ID }}
+      OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
 
     steps:
       - name: Checkout code
