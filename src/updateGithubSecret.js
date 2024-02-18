@@ -51,7 +51,7 @@ const updateGithubSecret = async (secretName, newSecretValue) => {
 
 export const updateLastNewsletterDate = async () => {
   const secretName = 'LAST_NEWSLETTER_DATE';
-  const newLastNewsletterDate = new Date().split('T')[0];
+  const newLastNewsletterDate = new Date().toISOString().split('T')[0];
   console.log('newLastNewsletterDate', newLastNewsletterDate);
   await updateGithubSecret(secretName, newLastNewsletterDate);
 };
