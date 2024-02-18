@@ -37,9 +37,10 @@ export function generateNewsletters(articles) {
   });
 
   const newsletterBody = generateNewsletterBody(articles);
+  const newsletterNumber = Number(process.env.LAST_NEWSLETTER_NUMBER) + 1;
 
   let blogNewsletter = `---
-title: "Articles I read on my way to work - #4"
+title: "Articles I read on my way to work - ${newsletterNumber}"
 pubDate: ${newsletterDate}
 tags: ["Newsletter"]
 ---

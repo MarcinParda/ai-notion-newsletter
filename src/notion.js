@@ -9,7 +9,9 @@ function getNotionClient() {
 }
 
 function filterByDate(arr) {
-  return arr.filter((obj) => new Date(obj.date) > new Date('2024-01-29'));
+  return arr.filter(
+    (obj) => new Date(obj.date) > new Date(process.env.LAST_NEWSLETTER_DATE)
+  );
 }
 
 function notionPageToArticle(page) {

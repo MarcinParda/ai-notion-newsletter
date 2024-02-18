@@ -11,6 +11,9 @@ jobs:
       NOTION_READER_DATABASE_ID: ${{ secrets.NOTION_READER_DATABASE_ID }}
       NOTION_NEWSLETTER_DATABASE_ID: ${{ secrets.NOTION_NEWSLETTER_DATABASE_ID }}
       OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+      LAST_NEWSLETTER_DATE: ${{ secrets.LAST_NEWSLETTER_DATE }}
+      LAST_NEWSLETTER_NUMBER: ${{ secrets.LAST_NEWSLETTER_NUMBER }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
