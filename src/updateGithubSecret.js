@@ -61,5 +61,5 @@ export const updateLastNewsletterNumber = async () => {
   const newLastNewsletterNumber =
     Number(process.env.LAST_NEWSLETTER_NUMBER) + 1;
   console.log('newLastNewsletterNumber', newLastNewsletterNumber);
-  await updateGithubSecret(secretName, newLastNewsletterNumber);
+  await updateGithubSecret(secretName, newLastNewsletterNumber.toString());
 };
