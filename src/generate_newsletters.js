@@ -1,4 +1,5 @@
 import { categories } from './add_category.js';
+import { getLastNewsletterData } from './notion.js';
 
 function generateNewsletterBody(articles) {
   let newsletterBody = '';
@@ -21,7 +22,7 @@ function generateNewsletterBody(articles) {
   return newsletterBody;
 }
 
-export function generateNewsletters(articles) {
+export async function generateNewsletters(articles) {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -35,9 +36,10 @@ export function generateNewsletters(articles) {
   const monthNameInEnglish = date.toLocaleDateString('en-US', {
     month: 'long',
   });
+  const { lastNewsletterNumber } = await getLastNewsletterData();
 
   const newsletterBody = generateNewsletterBody(articles);
-  const newsletterNumber = Number(process.env.LAST_NEWSLETTER_NUMBER) + 1;
+  const newsletterNumber = Number(lastNewsletterNumber) + 1;
 
   let blogNewsletter = `---
 title: "Articles I read on my way to work - #${newsletterNumber}"

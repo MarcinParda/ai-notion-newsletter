@@ -8,10 +8,8 @@ function getNotionClient() {
   return new Client({ auth: process.env.NOTION_NEWSLETTER_CONNECTION });
 }
 
-function filterByDate(arr) {
-  return arr.filter(
-    (obj) => new Date(obj.date) > new Date(process.env.LAST_NEWSLETTER_DATE)
-  );
+function filterByDate(arr, date) {
+  return arr.filter((obj) => new Date(obj.date) > new Date(date));
 }
 
 function notionPageToArticle(page) {
@@ -57,7 +55,10 @@ async function getAllArticlesFromNotion() {
 
 export async function getArticles() {
   const allArticles = await getAllArticlesFromNotion();
-  const articlesSinceLastNewsletter = filterByDate(allArticles);
+
+  const { lastNewsletterSentDate } = await getLastNewsletterData();
+  const filterDate = new Date(lastNewsletterSentDate);
+  const articlesSinceLastNewsletter = filterByDate(allArticles, filterDate);
   const newsletterArticles = articlesSinceLastNewsletter.filter(
     (article) => article.is_newsletter
   );
@@ -70,7 +71,23 @@ export async function getArticles() {
   return articles;
 }
 
-const titleRegex = /"([^"]+)"/;
+export async function getLastNewsletterData() {
+  const notion = getNotionClient();
+
+  const pages = await notion.databases.query({
+    database_id: process.env.NOTION_NEWSLETTER_DATABASE_ID,
+  });
+
+  const lastBlogNewsletter = pages.results[0];
+  const lastNewsletterSentDate = lastBlogNewsletter.created_time;
+  const lastNewsletterNumber =
+    lastBlogNewsletter.properties.Name.title[0].plain_text.split('#')[1];
+
+  return {
+    lastNewsletterSentDate,
+    lastNewsletterNumber,
+  };
+}
 
 export async function saveNewslettersToNotion(jobNewsletter, blogNewsletter) {
   const notion = getNotionClient();

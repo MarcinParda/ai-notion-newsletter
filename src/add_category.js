@@ -61,15 +61,14 @@ const systemPrompt = `You are a article categorizer.
 
 export async function addCategoriesToArticles(articles) {
   const userPrompt = `
-  ---USER PROMPT---
   ${JSON.stringify(articles, null, 2)}
-  ---END USER PROMPT---`;
+  `;
 
   const response = await chatComplition({
     systemPrompt,
     userPrompt,
     max_tokens: 4096,
-    model: 'gpt-3.5-turbo-16k',
+    model: 'gpt-4',
   });
 
   return JSON.parse(response.message);
