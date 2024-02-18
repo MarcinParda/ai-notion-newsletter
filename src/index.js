@@ -11,12 +11,8 @@ const articles = await getArticles();
 console.log('Assigning categories with GPT...');
 const articlesWithCategories = await addCategoriesToArticles(articles);
 
-console.log('Articles with categories:', articlesWithCategories);
-
 console.log('Grouping articles by category...');
 const groupedArticles = groupArticlesByCategory(articlesWithCategories);
-
-console.log('Grouped articles:', groupedArticles);
 
 console.log('Generating newsletters...');
 const { jobNewsletter, blogNewsletter } = generateNewsletters(groupedArticles);
