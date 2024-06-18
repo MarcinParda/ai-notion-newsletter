@@ -9,7 +9,7 @@ function getNotionClient() {
 }
 
 function filterByDate(arr, date) {
-  return arr.filter((obj) => new Date(obj.date) > new Date(date));
+  return arr.filter((obj) => new Date(obj.readDate) > new Date(date));
 }
 
 function notionPageToArticle(page) {
@@ -20,15 +20,15 @@ function notionPageToArticle(page) {
   const comment = richTextToMarkdown(page.properties.my_comment);
   const my_comment = comment ? cleanString(comment) : null;
   const link = page.properties.link.url;
-  const date = new Date(page.properties.created_at.created_time);
   const is_newsletter = page.properties.newsletter.checkbox;
+  const readDate = new Date(page.properties.read_date?.date?.start);
 
   return {
     title,
     my_comment,
     link,
-    date,
     is_newsletter,
+    readDate,
   };
 }
 
