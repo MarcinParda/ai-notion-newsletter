@@ -22,6 +22,7 @@ function notionPageToArticle(page) {
   const link = page.properties.link.url;
   const is_newsletter = page.properties.newsletter.checkbox;
   const readDate = new Date(page.properties.read_date?.date?.start);
+  const isHighlighted = page.properties.highlight.checkbox;
 
   return {
     title,
@@ -29,6 +30,7 @@ function notionPageToArticle(page) {
     link,
     is_newsletter,
     readDate,
+    isHighlighted,
   };
 }
 
@@ -66,6 +68,7 @@ export async function getArticles() {
     title: article.title,
     my_comment: article.my_comment,
     link: article.link,
+    isHighlighted: article.isHighlighted,
   }));
 
   return articles;

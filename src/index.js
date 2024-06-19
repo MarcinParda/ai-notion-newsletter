@@ -7,6 +7,7 @@ dotenv.config();
 
 console.log('Getting articles from notion...');
 const articles = await getArticles();
+const highlightedArticles = articles.filter((article) => article.isHighlighted);
 
 console.log('Assigning categories with GPT...');
 const articlesWithCategories = await addCategoriesToArticles(articles);
@@ -16,7 +17,8 @@ const groupedArticles = groupArticlesByCategory(articlesWithCategories);
 
 console.log('Generating newsletters...');
 const { jobNewsletter, blogNewsletter } = await generateNewsletters(
-  groupedArticles
+  groupedArticles,
+  highlightedArticles
 );
 
 console.log('Saving newsletters to notion...');

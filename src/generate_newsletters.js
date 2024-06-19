@@ -1,8 +1,20 @@
 import { categories } from './add_category.js';
 import { getLastNewsletterData } from './notion.js';
 
-function generateNewsletterBody(articles) {
+function generateNewsletterBody(articles, highlightedArticles) {
   let newsletterBody = '';
+
+  if (highlightedArticles.length > 0) {
+    newsletterBody += '## Highlighted\n';
+    highlightedArticles.forEach((article) => {
+      newsletterBody += `- [${article.title}](${article.link})`;
+      if (article.my_comment) {
+        newsletterBody += `  - ${article.my_comment}`;
+      }
+      newsletterBody += '\n';
+    });
+  }
+
   for (const category of categories) {
     if (!articles[category]) {
       continue;
@@ -10,7 +22,7 @@ function generateNewsletterBody(articles) {
     if (articles[category].length === 0) {
       continue;
     }
-    newsletterBody += `## ${category}\n`;
+    newsletterBody += `\n## ${category}\n`;
     articles[category].forEach((article) => {
       newsletterBody += `- [${article.title}](${article.link})`;
       if (article.my_comment) {
@@ -22,7 +34,7 @@ function generateNewsletterBody(articles) {
   return newsletterBody;
 }
 
-export async function generateNewsletters(articles) {
+export async function generateNewsletters(articles, highlightedArticles) {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -38,7 +50,7 @@ export async function generateNewsletters(articles) {
   });
   const { lastNewsletterNumber } = await getLastNewsletterData();
 
-  const newsletterBody = generateNewsletterBody(articles);
+  const newsletterBody = generateNewsletterBody(articles, highlightedArticles);
   const newsletterNumber = Number(lastNewsletterNumber) + 1;
 
   let blogNewsletter = `---
